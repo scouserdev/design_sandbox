@@ -1,3 +1,4 @@
+import 'package:design_sandbox/features/sandbox/providers/color_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,6 +7,7 @@ class TopControls extends ConsumerWidget {
   final double height;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    var currentColor = ref.watch(colorProvider);
     var safeHeight = height.clamp(120, double.infinity).toDouble();
 
     return Container(
@@ -14,7 +16,26 @@ class TopControls extends ConsumerWidget {
         color: Colors.grey,
         border: Border.all(color: Colors.white),
       ),
-      child: Center(child: Text("Top Controls")),
+      child: Center(
+        child: Column(
+          children: [
+            Text("Current Color:"),
+            SizedBox(
+              child: Container(
+                height: 30,
+                width: 30,
+                decoration: BoxDecoration(color: currentColor),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                ref.read(colorProvider.notifier).state = Colors.red;
+              },
+              child: Text("Change Color to red"),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
