@@ -1,4 +1,5 @@
 import 'package:design_sandbox/features/sandbox/providers/style_provider.dart';
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -27,12 +28,28 @@ class TopControls extends ConsumerWidget {
                 decoration: BoxDecoration(color: currentColor.backgroundColor),
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                ref.read(styleProvider.notifier).updateColor();
-                ref.read(styleProvider.notifier).updateRadius();
+            Slider(
+              value: ref.watch(styleProvider).borderRadius,
+              min: 15,
+              max: 200,
+              label: "Border Radius",
+              onChanged: (value) {
+                ref.read(styleProvider.notifier).updateRadius(value);
               },
-              child: Text("Change Color to red"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final Color newColor = await showColorPickerDialog(
+                  context,
+                  currentColor.backgroundColor,
+                  title: Text("Select a color"),
+                  enableShadesSelection: true,
+                  colorCodeHasColor: true,
+                  pickersEnabled: {ColorPickerType.wheel: true},
+                );
+                ref.read(styleProvider.notifier).updateColor(newColor);
+              },
+              child: Text("Pick a color"),
             ),
           ],
         ),

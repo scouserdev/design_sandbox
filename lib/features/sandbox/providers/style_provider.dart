@@ -12,11 +12,11 @@ class StyleNotifier extends Notifier<StyleState> {
     return StyleState.initial();
   }
 
-  void updateColor() {
-    state = state.copyWith(backgroundColor: Colors.red);
+  void updateColor(Color newColor) {
+    state = state.copyWith(backgroundColor: newColor);
   }
 
-  void updateRadius() {
-    state = state.copyWith(borderRadius: 50);
+  void updateRadius(double value) {
+    state = state.copyWith(borderRadius: value);
   }
 }
